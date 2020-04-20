@@ -2,6 +2,7 @@ package storage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,12 +86,16 @@ public class SongsStorageController {
 	public Map<String, Object>[] getAllUsingPagination(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") int sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") int order) {
+			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") String sortAttribute,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") String order) {
 
 		int startPoint = size * page;
-		return this.storage
-				.values()
+		List<Map<String,Object>> list = new ArrayList<>(this.storage.values());
+		Collections.sort(list,
+				(Map<String,Object> m1,Map<String,Object> m2)
+				-> 
+		((Comparable)m1.get(sortAttribute)).compareTo(m2.get(sortAttribute)));
+		return list
 				.stream()
 				.skip(startPoint)
 				.limit(size)
@@ -108,8 +113,8 @@ public class SongsStorageController {
 	public Map<String, Object>[] getSpecifiedNameWithPagination(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") int sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") int order,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") String sortAttribute,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") String order,
 			@RequestParam(name = "criteriaValue", required = true) int value) {
 
 		int startPoint = size * page;
@@ -133,8 +138,8 @@ public class SongsStorageController {
 	public Map<String, Object>[] getSpecifiedPerformerWithPagination(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") int sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") int order,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") String sortAttribute,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") String order,
 			@RequestParam(name = "criteriaValue", required = true) int value) {
 
 		int startPoint = size * page;
@@ -158,8 +163,8 @@ public class SongsStorageController {
 	public Map<String, Object>[] getSpecifiedGenreWithPagination(
 			@RequestParam(name = "size", required = false, defaultValue = "10") int size,
 			@RequestParam(name = "page", required = false, defaultValue = "0") int page,
-			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") int sortAttribute,
-			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") int order,
+			@RequestParam(name = "sortBy", required = false, defaultValue = "songId") String sortAttribute,
+			@RequestParam(name = "sortOrder", required = false, defaultValue = "asc") String order,
 			@RequestParam(name = "criteriaValue", required = true) int value) {
 
 		int startPoint = size * page;

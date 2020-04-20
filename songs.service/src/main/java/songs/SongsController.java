@@ -57,6 +57,7 @@ public class SongsController {
 			@RequestBody Song update) {
 		this.songs
 			.updateSong(songId, update);
+			//.orElseThrow(()->new PersonNotFoundException("could not find person by id: " + id));
 		//TODO: 404 if song not found
 		//TODO: cannot change songId!
 	}
